@@ -7,12 +7,10 @@ import {
 // Define your route refs
 export const rootRouteRef = createRouteRef({
   id: 'statora-root',
-  path: '/statora',
 });
 
 export const serviceRouteRef = createRouteRef({
   id: 'statora-service',
-  path: '/statora/:componentName',
 });
 
 // Create the plugin

@@ -70,7 +70,7 @@ export const ProductDetailPage = () => {
             const score = dora ? getHealthScore(dora) : null;
 
             return (
-              <Grid item xs={12} sm={6} md={4} key={name}>
+              <Grid item={true} xs={12} sm={6} md={4} key={name}>
                 <Card onClick={() => navigate(`/catalog/default/component/${name}/statora`)} sx={{ cursor: 'pointer', '&:hover': { boxShadow: 6 } }}>
                   <CardContent>
                     <Typography variant="h6" fontWeight="bold" gutterBottom>{name}</Typography>

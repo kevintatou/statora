@@ -1,8 +1,7 @@
 {
-  "name": "@internal/plugin-statora",
+  "name": "@tatou/plugin-statora",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
   "publishConfig": {
@@ -30,7 +29,9 @@
     "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/icons-material": "^7.0.2",
     "@supabase/supabase-js": "^2.49.4",
+    "react-router-dom": "^7.5.2",
     "react-use": "^17.2.4"
   },
   "peerDependencies": {
@@ -49,5 +50,6 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "packageManager": "yarn@1.22.15+sha512.033a040f18f6e7a04e4bf8ea0d7037a63ca19a2e054410543206284c7238108b7612144492f1f4b283d512d9c3f8340825f53947d6ca85c6751fd97cccf59ea0"
 }

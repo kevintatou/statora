@@ -1,5 +1,6 @@
 import { DiscoveryApi, IdentityApi } from "@backstage/core-plugin-api";
 import { StatoraApi } from "./apiRef";
+import { Mapping } from '../types';
 
 export class StatoraClient implements StatoraApi {
   constructor(

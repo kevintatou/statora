@@ -15,7 +15,7 @@ export const MappingOverview = ({ mapping }: { mapping: Mapping }) => (
     <Paper variant="outlined" sx={{ p: 2, mb: 4 }}>
       <Grid container spacing={2}>
         {Object.entries(mapping).map(([key, value]) => (
-          <Grid item xs={12} md={6} key={key}>
+          <Grid item={true} xs={12} md={6} key={key}>
             <Typography variant="subtitle2" color="textSecondary">
               {key.replace('_', ' ').toUpperCase()}
             </Typography>

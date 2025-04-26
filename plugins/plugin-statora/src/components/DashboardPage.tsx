@@ -1,37 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { catalogApiRef, Entity } from '@backstage/plugin-catalog-react';
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  Tooltip,
-  ToggleButton,
-  ToggleButtonGroup,
-  Stack,
-} from '@mui/material';
+import { catalogApiRef } from '@backstage/plugin-catalog-react';
+import { Entity } from '@backstage/catalog-model';
+import { Grid, Card, CardContent, Typography, Box, Tooltip, ToggleButton, ToggleButtonGroup, Stack } from '@mui/material';
 import { ViewModule, ViewQuilt } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '@backstage/core-plugin-api';
 import { statoraApiRef } from '../api/apiRef';
 
-type Mapping = {
-  component_name: string;
-  github_repo: string;
-  product_name?: string;
-};
-
-type DoraMetrics = {
-  component_name: string;
-  deploy_frequency: number;
-  lead_time_minutes: number;
-  change_failure_rate: number;
-  time_to_restore_minutes: number;
-};
+import { DoraMetrics, Mapping } from '../types'; // Assuming you have centralized types here
 
 export const DashboardPage = () => {
   const catalogApi = useApi(catalogApiRef);
+  const statoraApi = useApi(statoraApiRef);
   const navigate = useNavigate();
 
   const [components, setComponents] = useState<Entity[]>([]);
@@ -39,31 +19,30 @@ export const DashboardPage = () => {
   const [doraMetrics, setDoraMetrics] = useState<Record<string, DoraMetrics>>({});
   const [viewMode, setViewMode] = useState<'microservices' | 'products'>('products');
 
-  const statoraApi = useApi(statoraApiRef);
-
   useEffect(() => {
     const fetchData = async () => {
       const entities = await catalogApi.getEntities({ filter: { kind: 'Component' } });
       setComponents(entities.items);
-  
+
       const mappingsData = await statoraApi.getComponentMappings();
       const doraData = await statoraApi.getDoraMetrics();
-  
+
       const mappingMap = (mappingsData || []).reduce((acc: Record<string, Mapping>, m: Mapping) => {
         acc[m.component_name] = m;
         return acc;
       }, {});
       setMappings(mappingMap);
-  
+
       const doraMap = (doraData || []).reduce((acc: Record<string, DoraMetrics>, d: DoraMetrics) => {
         acc[d.component_name] = d;
         return acc;
       }, {});
       setDoraMetrics(doraMap);
     };
-  
+
     fetchData();
   }, [catalogApi, statoraApi]);
+
   const getHealthScore = (dora: DoraMetrics): number => {
     let score = 100;
     if (dora.deploy_frequency < 1) score -= 25;
@@ -79,13 +58,13 @@ export const DashboardPage = () => {
     return 'red';
   };
 
-  const groupedByProduct = components.reduce((acc, entity) => {
+  const groupedByProduct = components.reduce((acc: Record<string, Entity[]>, entity) => {
     const name = entity.metadata.name;
     const mapping = mappings[name];
     const key = mapping?.product_name || 'Unassigned';
     acc[key] = [...(acc[key] || []), entity];
     return acc;
-  }, {} as Record<string, Entity[]>);
+  }, {});
 
   const renderCard = (name: string, repo?: string, score?: number) => (
     <Card
@@ -164,7 +143,7 @@ export const DashboardPage = () => {
             const dora = doraMetrics[name];
             const score = dora ? getHealthScore(dora) : undefined;
             return (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={name}>
+              <Grid item={true} xs={12} sm={6} md={4} lg={3} key={name}>
                 {renderCard(name, mapping?.github_repo, score)}
               </Grid>
             );
@@ -173,18 +152,21 @@ export const DashboardPage = () => {
       ) : (
         <Grid container spacing={3}>
           {Object.entries(groupedByProduct).map(([product, group]) => {
-            const scores = group
-              .map(e => doraMetrics[e.metadata.name])
-              .filter(Boolean)
-              .map(getHealthScore);
+            const scores = (group as Entity[])
+              .map((e) => {
+                const dora = doraMetrics[e.metadata.name];
+                return dora ? getHealthScore(dora) : undefined;
+              })
+              .filter((v): v is number => v !== undefined);
 
             const avg = scores.length
-              ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+              ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length)
               : null;
 
             return (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product}>
+              <Grid item={true} xs={12} sm={6} md={4} lg={3} key={product}>
                 <Card
+                  onClick={() => navigate(`/statora/product/${encodeURIComponent(product)}`)}
                   sx={{
                     p: 2,
                     borderRadius: 3,
@@ -192,14 +174,15 @@ export const DashboardPage = () => {
                     transition: 'all 0.2s',
                     '&:hover': { boxShadow: 6 },
                   }}
-                  onClick={() => navigate(`/statora/product/${encodeURIComponent(product)}`)}
                 >
                   <CardContent>
                     <Typography variant="h6" fontWeight="bold">{product}</Typography>
                     {avg !== null && (
                       <>
                         <Tooltip title="Average DORA health of all services in this product">
-                          <Typography variant="body2" mt={1}>Product Health: {avg}%</Typography>
+                          <Typography variant="body2" mt={1}>
+                            Product Health: {avg}%
+                          </Typography>
                         </Tooltip>
                         <Box mt={0.5} height={8} bgcolor="#eee" borderRadius={5}>
                           <Box

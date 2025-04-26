@@ -17,21 +17,7 @@ import { useEntity } from '@backstage/plugin-catalog-react';
 import { statoraApiRef } from '../api/apiRef';
 import { MappingOverview } from './MappingOverview';
 import { DoraMetricsPanel } from './DoraMetricsPanel';
-
-type Mapping = {
-  github_repo: string;
-  argocd_app: string;
-  sentry_project: string;
-  gcp_project: string;
-  jira_project: string;
-};
-
-type DoraMetrics = {
-  deploy_frequency: number;
-  lead_time_minutes: number;
-  change_failure_rate: number;
-  time_to_restore_minutes: number;
-};
+import { Mapping, DoraMetrics } from '../types';
 
 export const ServiceDetailPage = () => {
   const { entity } = useEntity();
@@ -46,6 +32,7 @@ export const ServiceDetailPage = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [newMappingData, setNewMappingData] = useState<Mapping>({
+    component_name: '',
     github_repo: '',
     argocd_app: '',
     sentry_project: '',
@@ -121,7 +108,7 @@ export const ServiceDetailPage = () => {
                   <TextField
                     fullWidth
                     label={key.replace('_', ' ').toUpperCase()}
-                    value={mapping[key]}
+                    value={mapping[key] || ''}
                     onChange={e => setMapping({ ...mapping, [key]: e.target.value })}
                   />
                 </Box>
@@ -145,7 +132,15 @@ export const ServiceDetailPage = () => {
       ) : (
         <Box mt={4}>
           {mapping ? (
-            <MappingOverview mapping={mapping} />
+            <MappingOverview
+              mapping={{
+                github_repo: mapping.github_repo ?? '',
+                argocd_app: mapping.argocd_app ?? '',
+                sentry_project: mapping.sentry_project ?? '',
+                gcp_project: mapping.gcp_project ?? '',
+                jira_project: mapping.jira_project ?? '',
+              }}
+            />
           ) : (
             <Typography>No mapping found for this service.</Typography>
           )}
