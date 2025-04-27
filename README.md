@@ -27,7 +27,7 @@ Add the backend plugin to your Backstage backend:
 
 ```ts
 // packages/backend/src/index.ts
-backend.add(import('@internal/plugin-statora-backend'));
+backend.add(import('@tatou/plugin-statora-backend'));
 ```
 
 Ensure your `app-config.local.yaml` includes Supabase credentials for the backend:
@@ -48,7 +48,7 @@ This enables secure API routes to fetch DORA metrics and mappings.
 Install the frontend plugin:
 
 ```bash
-yarn add @internal/plugin-statora
+yarn add @tatou/plugin-statora
 ```
 
 Add the routes to your app:
@@ -59,7 +59,7 @@ import {
   StatoraDashboardPage,
   EntityStatoraContent,
   ProductDetailPage,
-} from '@internal/plugin-statora';
+} from '@tatou/plugin-statora';
 
 <Route path="/" element={<StatoraDashboardPage />} />
 <Route path="/catalog/:namespace/:kind/:name/statora" element={<EntityStatoraContent />} />
@@ -70,7 +70,7 @@ Include the Statora API client in your plugin's `apis.ts`:
 
 ```ts
 import { createApiFactory } from '@backstage/core-plugin-api';
-import { statoraApiRef, StatoraClient } from '@internal/plugin-statora';
+import { statoraApiRef, StatoraClient } from '@tatou/plugin-statora';
 import { discoveryApiRef, identityApiRef } from '@backstage/core-plugin-api';
 
 export const apis = [

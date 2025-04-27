@@ -4,11 +4,11 @@ This plugin backend was templated using the Backstage CLI. You should replace th
 
 ## Installation
 
-This plugin is installed via the `@internal/plugin-statora-backend` package. To install it to your backend package, run the following command:
+This plugin is installed via the `@tatou/plugin-statora-backend` package. To install it to your backend package, run the following command:
 
 ```bash
 # From your root directory
-yarn --cwd packages/backend add @internal/plugin-statora-backend
+yarn --cwd packages/backend add @tatou/plugin-statora-backend
 ```
 
 Then add the plugin to your backend in `packages/backend/src/index.ts`:
