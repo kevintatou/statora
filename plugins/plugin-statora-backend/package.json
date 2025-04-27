@@ -2,7 +2,6 @@
   "name": "@tatou/plugin-statora-backend",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "private": true,
   "main": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -11,7 +10,11 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "backend-plugin"
+    "role": "backend-plugin",
+    "pluginId": "statora",
+    "pluginPackages": [
+      "@tatou/plugin-statora-backend"
+    ]
   },
   "scripts": {
     "start": "backstage-cli package start",
