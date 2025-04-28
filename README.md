@@ -22,7 +22,11 @@ Connect your GitHub, ArgoCD, Jira, Sentry, and GCP tools to Backstage — withou
 ## 🔧 Installation
 
 ### 1. Backend Plugin Setup
-
+Install the backend plugin:
+```ts
+// packages/backend/
+yarn add @tatou/plugin-statora-backend
+```
 Add the backend plugin to your Backstage backend:
 
 ```ts
