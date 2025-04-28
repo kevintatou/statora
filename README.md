@@ -1,8 +1,8 @@
 # 🚦 Statora - Backstage Plugin for Service Health & Metadata Mapping (WIP)
 
-Statora is a Backstage plugin that gives you a single pane of glass for service health — with dynamic metadata mapping, DORA metrics, and YAML-free configuration.
+Statora is a Backstage plugin that gives you a single pane of glass for service health - with dynamic metadata mapping, DORA metrics, and YAML-free configuration.
 
-Connect your GitHub, ArgoCD, Jira, Sentry, and GCP tools to Backstage — without digging through annotations.
+Connect your GitHub, ArgoCD, Jira, Sentry, and GCP tools to Backstage - without digging through annotations.
 
 ![Dashboard Screenshot](./media/statora-dashboard.png)
 
@@ -141,7 +141,7 @@ YAML files and SQL scripts are included in `mock-data/schema.sql` and `mock-data
 
 All service metadata (e.g. GitHub repo, Sentry project, ArgoCD app, etc.) is stored in a central Supabase database.
 
-This allows teams to manage mappings dynamically — without editing YAML or opening PRs.
+This allows teams to manage mappings dynamically - without editing YAML or opening PRs.
 
 ---
 
