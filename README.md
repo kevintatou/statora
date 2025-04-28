@@ -1,4 +1,4 @@
-# 🚦 Statora - Backstage Plugin for Service Health & Metadata Mapping
+# 🚦 Statora - Backstage Plugin for Service Health & Metadata Mapping (WIP)
 
 Statora is a Backstage plugin that gives you a single pane of glass for service health — with dynamic metadata mapping, DORA metrics, and YAML-free configuration.
 
@@ -52,6 +52,7 @@ This enables secure API routes to fetch DORA metrics and mappings.
 Install the frontend plugin:
 
 ```bash
+// packages/app/
 yarn add @tatou/plugin-statora
 ```
 
@@ -60,30 +61,29 @@ Add the routes to your app:
 ```tsx
 // App.tsx or routes.tsx
 import {
-  StatoraDashboardPage,
+  DashboardPage,
   EntityStatoraContent,
   ProductDetailPage,
 } from '@tatou/plugin-statora';
 
-<Route path="/" element={<StatoraDashboardPage />} />
+<Route path="/" element={<DashboardPage />} />
 <Route path="/catalog/:namespace/:kind/:name/statora" element={<EntityStatoraContent />} />
 <Route path="/statora/product/:productName" element={<ProductDetailPage />} />
 ```
 
-Include the Statora API client in your plugin's `apis.ts`:
+Include the statora factory in `apis.ts`:
 
 ```ts
-import { createApiFactory } from '@backstage/core-plugin-api';
-import { statoraApiRef, StatoraClient } from '@tatou/plugin-statora';
-import { discoveryApiRef, identityApiRef } from '@backstage/core-plugin-api';
+import { statoraApiFactory } from '@tatou/plugin-statora';
 
-export const apis = [
+export const apis: AnyApiFactory[] = [
   createApiFactory({
-    api: statoraApiRef,
-    deps: { discoveryApi: discoveryApiRef, identityApi: identityApiRef },
-    factory: ({ discoveryApi, identityApi }) =>
-      new StatoraClient({ discoveryApi, identityApi }),
+    api: scmIntegrationsApiRef,
+    deps: { configApi: configApiRef },
+    factory: ({ configApi }) => ScmIntegrationsApi.fromConfig(configApi),
   }),
+  ScmAuth.createDefaultApiFactory(),
+  statoraApiFactory // <----- add this line
 ];
 ```
 
