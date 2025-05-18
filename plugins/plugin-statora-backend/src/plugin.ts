@@ -14,10 +14,11 @@ export const statoraPlugin = createBackendPlugin({
         httpRouter: coreServices.httpRouter,
       },
       async init({ logger, config, httpRouter }) {
-        const router = await createRouter({ logger, config });
-        httpRouter.use(router);
-        logger.info('✅ Statora router initialized');
+        const apiRouter = await createRouter({ logger, config });
+        httpRouter.use(apiRouter);
+        logger.info('✅ Statora router mounted');
       },
     });
   },
 });
+export default statoraPlugin;

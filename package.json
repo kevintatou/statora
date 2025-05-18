@@ -1,0 +1,27 @@
+{
+  "name": "statora",
+  "version": "0.0.1",
+  "description": "Statora is a Backstage plugin that gives you a single pane of glass for service health — with dynamic metadata mapping, DORA metrics, and YAML-free configuration.",
+  "homepage": "https://github.com/kevintatou/statora#readme",
+  "bugs": {
+    "url": "https://github.com/kevintatou/statora/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevintatou/statora.git"
+  },
+  "license": "MIT",
+  "author": "kevin tatou",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd plugins/plugin-statora && yarn dev:yalc\" \"cd plugins/plugin-statora-backend && yarn dev:yalc\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "@backstage/plugin-catalog-backend": "^1.32.1"
+  }
+}

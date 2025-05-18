@@ -2,26 +2,26 @@
   "name": "@tatou/plugin-statora-backend",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "main": "dist/index.esm.js",
+  "main": "dist/index.cjs.js",          
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public",
-    "main": "dist/index.cjs.js",
+    "main": "dist/index.js",
     "types": "dist/index.d.ts"
   },
+  "type": "commonjs",
+
   "backstage": {
     "role": "backend-plugin",
-    "pluginId": "statora",
-    "pluginPackages": [
-      "@tatou/plugin-statora-backend"
-    ]
+    "pluginId": "statora"
   },
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",
+    "dev:yalc": "chokidar 'src/**/*' -c 'yarn build && yalc push --changed'",
     "lint": "backstage-cli package lint",
     "test": "backstage-cli package test",
-    "clean": "backstage-cli package clean",
+    "clean": "rm -rf dist",
     "prepack": "backstage-cli package prepack",
     "postpack": "backstage-cli package postpack"
   },
@@ -42,9 +42,5 @@
     "@types/express": "^4.17.6",
     "@types/supertest": "^2.0.12",
     "supertest": "^6.2.4"
-  },
-  "files": [
-    "dist"
-  ],
-  "packageManager": "yarn@1.22.15+sha512.033a040f18f6e7a04e4bf8ea0d7037a63ca19a2e054410543206284c7238108b7612144492f1f4b283d512d9c3f8340825f53947d6ca85c6751fd97cccf59ea0"
+  }
 }

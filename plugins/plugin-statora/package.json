@@ -10,12 +10,17 @@
     "types": "dist/index.d.ts"
   },
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "statora",
+    "pluginPackages": [
+      "@tatou/plugin-statora"
+    ]
   },
   "sideEffects": false,
   "scripts": {
     "start": "backstage-cli package start",
     "build": "backstage-cli package build",
+    "dev:yalc": "chokidar 'src/**/*' -c 'yarn build && yalc push --changed'",
     "lint": "backstage-cli package lint",
     "test": "backstage-cli package test",
     "clean": "backstage-cli package clean",
@@ -31,12 +36,9 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@mui/icons-material": "^7.0.2",
     "@supabase/supabase-js": "^2.49.4",
-    "react-router-dom": "^7.5.2",
     "react-use": "^17.2.4"
   },
-  "peerDependencies": {
-    "react": "^16.13.1 || ^17.0.0 || ^18.0.0"
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "@backstage/cli": "^0.32.0",
     "@backstage/core-app-api": "^1.16.1",
@@ -46,7 +48,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
     "msw": "^1.0.0",
-    "react": "^16.13.1 || ^17.0.0 || ^18.0.0"
+    "react-router-dom": "^7.5.3"
   },
   "files": [
     "dist"
