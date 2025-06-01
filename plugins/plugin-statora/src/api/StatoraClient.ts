@@ -56,9 +56,12 @@ export class StatoraClient implements StatoraApi {
   }
 
   createComponentMapping(componentName: string, mapping: Mapping) {
+    console.log(componentName)
+    console.log(mapping)
     return this.fetchWithAuth(`/components`, {
       method: 'POST',
       body: JSON.stringify({ ...mapping, component_name: componentName }),
-    });
+    }
+  );
   }
 }

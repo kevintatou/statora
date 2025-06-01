@@ -27,7 +27,7 @@ export const DashboardPage = statoraPlugin.provide(
   createRoutableExtension({
     name: 'DashboardPage',
     component: () =>
-      import('./components/DashboardPage').then(m => m.DashboardPage),
+      import('./pages/DashboardPage').then(m => m.DashboardPage),
     mountPoint: rootRouteRef,
   }),
 );
@@ -37,7 +37,7 @@ export const EntityStatoraContent = statoraPlugin.provide(
   createRoutableExtension({
     name: 'StatoraServiceDetailPage',
     component: () =>
-      import('./components/ServiceDetailPage').then(m => m.ServiceDetailPage),
+      import('./pages/ServiceDetailPage').then(m => m.ServiceDetailPage),
     mountPoint: serviceRouteRef,
   }),
 );

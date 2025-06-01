@@ -1,24 +1,49 @@
 import { Grid, Typography, Paper, Chip } from '@mui/material';
+import { DoraMetrics } from '../types';
 
-type DoraMetrics = {
-  deploy_frequency: number;
-  lead_time_minutes: number;
-  change_failure_rate: number;
-  time_to_restore_minutes: number;
+type DoraMetricKey = keyof Pick<
+  DoraMetrics,
+  'deploy_frequency' | 'lead_time_minutes' | 'change_failure_rate' | 'time_to_restore_minutes'
+>;
+
+type Thresholds = {
+  good: number;
+  warn: number;
+  lowerIsBetter?: boolean;
 };
 
-const getHealthColor = (metric: string, value: number): 'success' | 'warning' | 'error' => {
-  switch (metric) {
-    case 'deploy_frequency':
-      return value >= 7 ? 'success' : value >= 3 ? 'warning' : 'error';
-    case 'lead_time_minutes':
-      return value <= 60 ? 'success' : value <= 240 ? 'warning' : 'error';
-    case 'change_failure_rate':
-      return value <= 15 ? 'success' : value <= 30 ? 'warning' : 'error';
-    case 'time_to_restore_minutes':
-      return value <= 60 ? 'success' : value <= 240 ? 'warning' : 'error';
-    default:
-      return 'error';
+const METRIC_CONFIG: Record<DoraMetricKey, { label: string; unit: string; thresholds: Thresholds }> = {
+  deploy_frequency: {
+    label: 'Deploy Frequency',
+    unit: '/week',
+    thresholds: { good: 7, warn: 3, lowerIsBetter: false },
+  },
+  lead_time_minutes: {
+    label: 'Lead Time',
+    unit: 'min',
+    thresholds: { good: 60, warn: 240, lowerIsBetter: true },
+  },
+  change_failure_rate: {
+    label: 'Change Failure Rate',
+    unit: '%',
+    thresholds: { good: 15, warn: 30, lowerIsBetter: true },
+  },
+  time_to_restore_minutes: {
+    label: 'Time to Restore',
+    unit: 'min',
+    thresholds: { good: 60, warn: 240, lowerIsBetter: true },
+  },
+};
+
+const getHealthColor = (
+  key: DoraMetricKey,
+  value: number
+): 'success' | 'warning' | 'error' => {
+  const { good, warn, lowerIsBetter } = METRIC_CONFIG[key].thresholds;
+  if (lowerIsBetter) {
+    return value <= good ? 'success' : value <= warn ? 'warning' : 'error';
+  } else {
+    return value >= good ? 'success' : value >= warn ? 'warning' : 'error';
   }
 };
 
@@ -27,34 +52,18 @@ export const DoraMetricsPanel = ({ dora }: { dora: DoraMetrics }) => (
     <Typography variant="h6" gutterBottom>DORA Metrics</Typography>
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Grid container spacing={2}>
-        <Grid   xs={12} sm={6}>
-          <Typography variant="subtitle2">Deploy Frequency</Typography>
-          <Chip
-            label={`${dora.deploy_frequency}/week`}
-            color={getHealthColor('deploy_frequency', dora.deploy_frequency)}
-          />
-        </Grid>
-        <Grid item={true} xs={12} sm={6}>
-          <Typography variant="subtitle2">Lead Time</Typography>
-          <Chip
-            label={`${dora.lead_time_minutes} min`}
-            color={getHealthColor('lead_time_minutes', dora.lead_time_minutes)}
-          />
-        </Grid>
-        <Grid item={true} xs={12} sm={6}>
-          <Typography variant="subtitle2">Change Failure Rate</Typography>
-          <Chip
-            label={`${dora.change_failure_rate}%`}
-            color={getHealthColor('change_failure_rate', dora.change_failure_rate)}
-          />
-        </Grid>
-        <Grid item={true} xs={12} sm={6}>
-          <Typography variant="subtitle2">Time to Restore</Typography>
-          <Chip
-            label={`${dora.time_to_restore_minutes} min`}
-            color={getHealthColor('time_to_restore_minutes', dora.time_to_restore_minutes)}
-          />
-        </Grid>
+        {(Object.keys(METRIC_CONFIG) as DoraMetricKey[]).map((key) => {
+          const config = METRIC_CONFIG[key];
+          const value = dora[key];
+          const color = getHealthColor(key, value);
+
+          return (
+            <Grid item xs={12} sm={6} key={key}>
+              <Typography variant="subtitle2">{config.label}</Typography>
+              <Chip label={`${value}${config.unit}`} color={color} />
+            </Grid>
+          );
+        })}
       </Grid>
     </Paper>
   </>

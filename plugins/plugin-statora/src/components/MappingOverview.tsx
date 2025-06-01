@@ -1,13 +1,6 @@
-import React from 'react';
 import { Grid, Typography, Paper } from '@mui/material';
+import { Mapping } from '../types';
 
-type Mapping = {
-  github_repo: string;
-  argocd_app: string;
-  sentry_project: string;
-  gcp_project: string;
-  jira_project: string;
-};
 
 export const MappingOverview = ({ mapping }: { mapping: Mapping }) => (
   <>

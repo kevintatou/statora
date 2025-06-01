@@ -15,8 +15,8 @@ import {
 import { useApi } from '@backstage/core-plugin-api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { statoraApiRef } from '../api/apiRef';
-import { MappingOverview } from './MappingOverview';
-import { DoraMetricsPanel } from './DoraMetricsPanel';
+import { MappingOverview } from '../components/MappingOverview';
+import { DoraMetricsPanel } from '../components/DoraMetricsPanel';
 import { Mapping, DoraMetrics } from '../types';
 
 export const ServiceDetailPage = () => {
@@ -73,6 +73,7 @@ export const ServiceDetailPage = () => {
 
   const handleCreate = async () => {
     try {
+      console.log("HANDLE CRwdawEATE  ")
       const created = await statoraApi.createComponentMapping(componentName, newMappingData);
       setMapping(created);
       setCreateModalOpen(false);
@@ -172,7 +173,7 @@ export const ServiceDetailPage = () => {
         <DialogActions>
           <Button onClick={() => setCreateModalOpen(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleCreate}>
-            Create
+            Createawe
           </Button>
         </DialogActions>
       </Dialog>
