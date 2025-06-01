@@ -1,3 +1,5 @@
+⚠️ NOTE: Mappings aren’t being saved properly in this version. I’m currently pausing active development but wanted to share the plugin with the community. Contributions are welcome!
+
 # 🚦 Statora - Backstage Plugin for Service Health & Metadata Mapping (WIP)
 
 Statora is a Backstage plugin that gives you a single pane of glass for service health - with dynamic metadata mapping, DORA metrics, and YAML-free configuration.
